@@ -3,6 +3,8 @@ package com.khm.reactivepostgres;
 import io.r2dbc.spi.ConnectionFactories;
 import io.r2dbc.spi.ConnectionFactory;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -23,23 +25,17 @@ class MemberControllerTest {
 
   @Autowired
   private WebTestClient webTestClient;
+
   @Autowired
   private MemberRepository memberRepository;
 
   @Value("${spring.r2dbc.url}")
   private String dbUrl;
 
-  private void insertData() {
+  @BeforeEach
+  public void setup() {
     initializeDatabase();
-    Flux<Member> memberFlux = Flux.just(Member.builder().name("ani").build(),
-        Member.builder().name("budi").build(),
-        Member.builder().name("cep").build(),
-        Member.builder().name("dod").build());
-    memberRepository.deleteAll()
-        .thenMany(memberFlux)
-        .flatMap(memberRepository::save)
-        .doOnNext(member -> log.info("inserted {}", member))
-        .blockLast();
+    insertData();
   }
 
   private void initializeDatabase() {
@@ -49,9 +45,22 @@ class MemberControllerTest {
     template.getDatabaseClient().sql(query).fetch().rowsUpdated().block();
   }
 
+  private void insertData() {
+    Flux<Member> memberFlux = Flux.just(
+        Member.builder().name("ani").build(),
+        Member.builder().name("budi").build(),
+        Member.builder().name("cep").build(),
+        Member.builder().name("dod").build()
+    );
+    memberRepository.deleteAll()
+        .thenMany(memberFlux)
+        .flatMap(memberRepository::save)
+        .doOnNext(member -> log.info("inserted {}", member))
+        .blockLast();
+  }
+
   @Test
-  void getAll() {
-    insertData();
+  public void getAll() {
     webTestClient.get()
         .uri("/api/member")
         .accept(MediaType.APPLICATION_JSON)
@@ -72,8 +81,7 @@ class MemberControllerTest {
   }
 
   @Test
-  void getOne() {
-    insertData();
+  public void getOne() {
     webTestClient.get()
         .uri("/api/member/ani")
         .accept(MediaType.APPLICATION_JSON)
