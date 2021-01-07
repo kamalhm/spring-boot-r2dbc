@@ -42,7 +42,7 @@ public class MemberController {
   }
 
   @DeleteMapping
-  public Mono<Void> deleteBook(@RequestBody Member member) {
+  public Mono<Void> deleteMember(@RequestBody Member member) {
     return memberRepository.deleteById(member.getId());
   }
 }
