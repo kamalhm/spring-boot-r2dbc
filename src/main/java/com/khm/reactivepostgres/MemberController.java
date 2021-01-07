@@ -1,7 +1,7 @@
 package com.khm.reactivepostgres;
 
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,10 +15,10 @@ import reactor.core.publisher.Mono;
 
 @RestController
 @RequestMapping(value = "/api/member")
+@RequiredArgsConstructor
 public class MemberController {
 
-  @Autowired
-  private MemberRepository memberRepository;
+  private final MemberRepository memberRepository;
 
   @GetMapping
   public Flux<Member> getAll() {
