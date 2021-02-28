@@ -1,6 +1,7 @@
 package com.khm.reactivepostgres;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,6 +18,7 @@ import reactor.core.scheduler.Schedulers;
 @RestController
 @RequestMapping(value = "/api/member")
 @RequiredArgsConstructor
+@Slf4j
 public class MemberController {
 
   private final MemberRepository memberRepository;
@@ -38,13 +40,12 @@ public class MemberController {
 
   @PostMapping(value = "/{number}")
   public Flux<Member> createMembers(@PathVariable int number) {
-
-    return generateRandomMember(number).subscribeOn(Schedulers.parallel());
+    return generateRandomMember(number).subscribeOn(Schedulers.boundedElastic());
   }
 
   private Flux<Member> generateRandomMember(int number) {
-    return Mono.defer(
-            () -> Mono.just(Member.builder().name(RandomStringUtils.randomAlphabetic(5)).build()))
+    return Mono.fromSupplier(
+            () -> Member.builder().name(RandomStringUtils.randomAlphabetic(5)).build())
         .flatMap(memberRepository::save)
         .repeat(number);
   }
