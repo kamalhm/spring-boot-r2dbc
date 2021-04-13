@@ -19,36 +19,29 @@ public class TransactionalService {
   Mono<Balance> doTransaction(CreateTransactionWebRequest request) {
     Long amount = request.getAmount();
 
-//    return Mono.zip(balanceRepository.findById(request.getFrom()),
-//        balanceRepository.findById(request.getTo()),
-//        (fromBalance, toBalance) -> executeTransaction(fromBalance, toBalance, amount))
-//        .flatMap(balanceMono -> balanceMono);
-
-    return Mono.zip(balanceRepository.findById(request.getFrom()),
-        balanceRepository.findById(request.getTo()))
+    return Mono.zip(balanceRepository.findByMemberId(request.getFrom()),
+        balanceRepository.findByMemberId(request.getTo()))
         .flatMap(balanceTuple -> executeTransaction(balanceTuple, amount));
   }
 
   private Mono<Balance> executeTransaction(Tuple2<Balance, Balance> balanceTuple, Long amount) {
     Balance fromBalance = balanceTuple.getT1();
     Balance toBalance = balanceTuple.getT2();
-    return deductBalance(fromBalance, amount)
-        .flatMap(balance -> increaseBalance(toBalance, amount));
-  }
-
-  private Mono<Balance> executeTransaction(Balance fromBalance, Balance toBalance, Long amount) {
     return deductBalance(fromBalance, amount).flatMap(balance -> increaseBalance(toBalance, amount));
   }
 
   private Mono<Balance> increaseBalance(Balance toBalance, Long amount) {
-    return Mono.fromSupplier(() -> new Random().nextDouble()).flatMap(randomValue -> {
-      log.info("random value {}", randomValue);
-      if (randomValue > 0.5) {
-        toBalance.setBalance(toBalance.getBalance() + amount);
-        return balanceRepository.save(toBalance);
-      }
-      return Mono.error(new RuntimeException("randomized error"));
-    });
+    return Mono.fromSupplier(() -> new Random().nextDouble())
+        .flatMap(randomValue -> increaseBalance(toBalance, amount, randomValue));
+  }
+
+  private Mono<Balance> increaseBalance(Balance toBalance, Long amount, Double randomValue) {
+    log.info("random value {}", randomValue);
+    if (randomValue > 0.5) {
+      toBalance.setBalance(toBalance.getBalance() + amount);
+      return balanceRepository.save(toBalance);
+    }
+    return Mono.error(new RuntimeException("randomized error"));
   }
 
   private Mono<Balance> deductBalance(Balance fromBalance, Long amount) {
