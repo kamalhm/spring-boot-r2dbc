@@ -17,7 +17,7 @@ An example implementation of Spring Boot R2DBC REST API with PostgreSQL database
 ## Setup
 1. Run postgresql locally (or from docker)
 2. Create two databases
-    - reactive (main database)
+    - postgres (main database)
     - test (dummy database for integration testing)
 3. Run Spring Boot App
 
