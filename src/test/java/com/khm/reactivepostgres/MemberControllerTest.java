@@ -1,9 +1,10 @@
 package com.khm.reactivepostgres;
 
+import com.khm.reactivepostgres.entity.Member;
+import com.khm.reactivepostgres.repository.MemberRepository;
 import io.r2dbc.spi.ConnectionFactories;
 import io.r2dbc.spi.ConnectionFactory;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

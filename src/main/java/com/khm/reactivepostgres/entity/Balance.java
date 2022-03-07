@@ -1,5 +1,6 @@
-package com.khm.reactivepostgres;
+package com.khm.reactivepostgres.entity;
 
+import java.util.UUID;
 import lombok.Builder;
 import lombok.Data;
 import org.springframework.data.annotation.CreatedBy;
@@ -9,11 +10,10 @@ import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.relational.core.mapping.Column;
 
-import java.util.UUID;
-
 @Builder
 @Data
 public class Balance {
+
   @Id
   private UUID id;
   @Column("member_id")

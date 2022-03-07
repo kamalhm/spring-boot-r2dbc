@@ -1,6 +1,8 @@
-package com.khm.reactivepostgres;
+package com.khm.reactivepostgres.controller;
 
-import lombok.Data;
+import com.khm.reactivepostgres.dto.CreateTransactionWebRequest;
+import com.khm.reactivepostgres.entity.Balance;
+import com.khm.reactivepostgres.service.TransactionalService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,11 +25,4 @@ public class TransactionController {
   public Mono<Balance> createTransaction(@RequestBody CreateTransactionWebRequest request) {
     return transactionalService.doTransaction(request);
   }
-}
-
-@Data
-class CreateTransactionWebRequest {
-  String from;
-  String to;
-  Long amount;
 }

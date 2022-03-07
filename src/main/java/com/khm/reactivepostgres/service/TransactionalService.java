@@ -1,5 +1,9 @@
-package com.khm.reactivepostgres;
+package com.khm.reactivepostgres.service;
 
+import com.khm.reactivepostgres.dto.CreateTransactionWebRequest;
+import com.khm.reactivepostgres.entity.Balance;
+import com.khm.reactivepostgres.repository.BalanceRepository;
+import java.util.Random;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -7,27 +11,27 @@ import org.springframework.transaction.annotation.Transactional;
 import reactor.core.publisher.Mono;
 import reactor.util.function.Tuple2;
 
-import java.util.Random;
-
 @RequiredArgsConstructor
 @Service
 @Slf4j
 public class TransactionalService {
+
   private final BalanceRepository balanceRepository;
 
   @Transactional
-  Mono<Balance> doTransaction(CreateTransactionWebRequest request) {
+  public Mono<Balance> doTransaction(CreateTransactionWebRequest request) {
     Long amount = request.getAmount();
 
     return Mono.zip(balanceRepository.findByMemberId(request.getFrom()),
-        balanceRepository.findByMemberId(request.getTo()))
+            balanceRepository.findByMemberId(request.getTo()))
         .flatMap(balanceTuple -> executeTransaction(balanceTuple, amount));
   }
 
   private Mono<Balance> executeTransaction(Tuple2<Balance, Balance> balanceTuple, Long amount) {
     Balance fromBalance = balanceTuple.getT1();
     Balance toBalance = balanceTuple.getT2();
-    return deductBalance(fromBalance, amount).flatMap(balance -> increaseBalance(toBalance, amount));
+    return deductBalance(fromBalance, amount).flatMap(
+        balance -> increaseBalance(toBalance, amount));
   }
 
   private Mono<Balance> increaseBalance(Balance toBalance, Long amount) {

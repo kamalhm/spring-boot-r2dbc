@@ -1,5 +1,7 @@
-package com.khm.reactivepostgres;
+package com.khm.reactivepostgres.controller;
 
+import com.khm.reactivepostgres.entity.Member;
+import com.khm.reactivepostgres.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomStringUtils;

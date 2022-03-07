@@ -1,13 +1,14 @@
-package com.khm.reactivepostgres;
+package com.khm.reactivepostgres.entity;
 
 import lombok.Builder;
-import lombok.Value;
+import lombok.Data;
 import org.springframework.data.annotation.Id;
 
 
-@Value
 @Builder
+@Data
 public class Member {
+
   @Id
   private Long id;
   private String name;
