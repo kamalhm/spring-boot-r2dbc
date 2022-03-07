@@ -1,5 +1,6 @@
 package com.khm.reactivepostgres.controller;
 
+import com.khm.reactivepostgres.dto.CreateBalanceWebRequest;
 import com.khm.reactivepostgres.entity.Balance;
 import com.khm.reactivepostgres.repository.BalanceRepository;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +20,11 @@ public class BalanceController {
   private final BalanceRepository balanceRepository;
 
   @PostMapping
-  public Mono<Balance> createBalance(@RequestBody Balance balance) {
+  public Mono<Balance> createBalance(@RequestBody CreateBalanceWebRequest request) {
+    final Balance balance = Balance.builder()
+        .balance(request.getBalance())
+        .memberId(request.getMemberId())
+        .build();
     return balanceRepository.save(balance);
   }
 
