@@ -18,7 +18,7 @@
         <version>3.2.1</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>com.khm</groupId>
+    <groupId>dev.kamalhm</groupId>
     <artifactId>reactive-postgres</artifactId>
     <version>0.0.2-SNAPSHOT</version>
     <name>reactive-postgres</name>

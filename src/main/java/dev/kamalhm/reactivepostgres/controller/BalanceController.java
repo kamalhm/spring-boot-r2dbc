@@ -1,8 +1,8 @@
-package com.khm.reactivepostgres.controller;
+package dev.kamalhm.reactivepostgres.controller;
 
-import com.khm.reactivepostgres.dto.CreateBalanceWebRequest;
-import com.khm.reactivepostgres.entity.Balance;
-import com.khm.reactivepostgres.repository.BalanceRepository;
+import dev.kamalhm.reactivepostgres.dto.CreateBalanceWebRequest;
+import dev.kamalhm.reactivepostgres.entity.Balance;
+import dev.kamalhm.reactivepostgres.repository.BalanceRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PostMapping;

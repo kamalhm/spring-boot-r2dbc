@@ -1,4 +1,4 @@
-package com.khm.reactivepostgres.entity;
+package dev.kamalhm.reactivepostgres.entity;
 
 import java.util.UUID;
 import lombok.Builder;

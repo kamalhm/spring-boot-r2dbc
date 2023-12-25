@@ -1,4 +1,4 @@
-package com.khm.reactivepostgres.config;
+package dev.kamalhm.reactivepostgres.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

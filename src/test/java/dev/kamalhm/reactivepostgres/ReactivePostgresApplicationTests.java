@@ -1,4 +1,4 @@
-package com.khm.reactivepostgres;
+package dev.kamalhm.reactivepostgres;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

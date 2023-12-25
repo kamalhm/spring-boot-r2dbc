@@ -1,7 +1,7 @@
-package com.khm.reactivepostgres;
+package dev.kamalhm.reactivepostgres;
 
-import com.khm.reactivepostgres.entity.Member;
-import com.khm.reactivepostgres.repository.MemberRepository;
+import dev.kamalhm.reactivepostgres.entity.Member;
+import dev.kamalhm.reactivepostgres.repository.MemberRepository;
 import io.r2dbc.spi.ConnectionFactories;
 import io.r2dbc.spi.ConnectionFactory;
 import lombok.extern.slf4j.Slf4j;

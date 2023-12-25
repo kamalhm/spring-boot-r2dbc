@@ -1,4 +1,4 @@
-package com.khm.reactivepostgres;
+package dev.kamalhm.reactivepostgres;
 
 import io.r2dbc.spi.ConnectionFactory;
 import org.springframework.beans.factory.annotation.Qualifier;

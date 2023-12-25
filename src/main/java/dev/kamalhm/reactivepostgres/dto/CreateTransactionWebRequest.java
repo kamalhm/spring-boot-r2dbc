@@ -1,4 +1,4 @@
-package com.khm.reactivepostgres.dto;
+package dev.kamalhm.reactivepostgres.dto;
 
 import lombok.Data;
 

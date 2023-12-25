@@ -1,6 +1,6 @@
-package com.khm.reactivepostgres.repository;
+package dev.kamalhm.reactivepostgres.repository;
 
-import com.khm.reactivepostgres.entity.Member;
+import dev.kamalhm.reactivepostgres.entity.Member;
 import org.springframework.data.r2dbc.repository.R2dbcRepository;
 import reactor.core.publisher.Mono;
 
