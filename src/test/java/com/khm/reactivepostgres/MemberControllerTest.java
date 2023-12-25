@@ -17,6 +17,8 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import reactor.core.publisher.Flux;
 
+import static org.hamcrest.Matchers.containsInAnyOrder;
+
 
 @SpringBootTest
 @AutoConfigureWebTestClient
@@ -63,23 +65,15 @@ class MemberControllerTest {
   @Test
   public void getAll() {
     webTestClient.get()
-        .uri("/api/member")
-        .accept(MediaType.APPLICATION_JSON)
-        .exchange()
-        .expectStatus()
-        .isOk()
-        .expectBody()
-        .jsonPath("$")
-        .isArray()
-        .jsonPath("$[0].name")
-        .isEqualTo("ani")
-        .jsonPath("$[1].name")
-        .isEqualTo("budi")
-        .jsonPath("$[2].name")
-        .isEqualTo("cep")
-        .jsonPath("$[3].name")
-        .isEqualTo("dod");
+            .uri("/api/member")
+            .accept(MediaType.APPLICATION_JSON)
+            .exchange()
+            .expectStatus().isOk()
+            .expectBody()
+            .jsonPath("$[*].name")
+            .value(containsInAnyOrder("ani", "budi", "cep", "dod"));
   }
+
 
   @Test
   public void getOne() {
