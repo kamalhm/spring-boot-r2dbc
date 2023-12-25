@@ -2,21 +2,21 @@
 
 An example implementation of Spring Boot R2DBC REST API with PostgreSQL database.
 
-## Tools
-* Java
+## Technology stack
+* Java 17
 * Maven
-* PostgreSQL
+* PostgreSQL 16.1
 * Docker
 
-## Java Dependency
-* Spring Boot 2.4.1.RELEASE
+## Java Dependencies
+* Spring Boot 3.2.1
 * Spring Data R2DBC
-* PostgreSQL Driver
-* Junit 5
+* R2DBC PostgreSQL Driver
+* JUnit 5
 
 ## Setup
 
-1. Run postgresql locally (or from docker)
+1. Run postgresql locally (or start from docker-compose file)
 2. Create two databases
    - postgres (main database)
    - test (dummy database for integration testing)
@@ -30,7 +30,7 @@ An example implementation of Spring Boot R2DBC REST API with PostgreSQL database
 
 2. Run generated docker image
 
-`docker run -it -p8080:8080 --network="host" reactive-postgres:0.0.1-SNAPSHOT`
+`docker run -it -p8080:8080 --network="host" reactive-postgres:0.0.2-SNAPSHOT`
 
 
 
