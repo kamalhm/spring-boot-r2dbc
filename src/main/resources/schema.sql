@@ -7,7 +7,7 @@ CREATE TABLE IF NOT EXISTS member
 CREATE TABLE IF NOT EXISTS balance
 (
     id                 BIGINT GENERATED ALWAYS AS IDENTITY,
-    member_id          TEXT    NOT NULL,
+    member_id          BIGINT    NOT NULL,
     balance            integer NOT NULL,
     created_by         TEXT    NOT NULL,
     created_date       bigint  NOT NULL,

@@ -17,15 +17,12 @@ import reactor.core.publisher.Mono;
 @Slf4j
 public class BalanceController {
 
-  private final BalanceRepository balanceRepository;
+    private final BalanceRepository balanceRepository;
 
-  @PostMapping
-  public Mono<Balance> createBalance(@RequestBody CreateBalanceWebRequest request) {
-    final Balance balance = Balance.builder()
-        .balance(request.getBalance())
-        .memberId(request.getMemberId())
-        .build();
-    return balanceRepository.save(balance);
-  }
+    @PostMapping
+    public Mono<Balance> createBalance(@RequestBody CreateBalanceWebRequest request) {
+        final Balance balance = new Balance(request.getMemberId(), request.getBalance());
+        return balanceRepository.save(balance);
+    }
 
 }

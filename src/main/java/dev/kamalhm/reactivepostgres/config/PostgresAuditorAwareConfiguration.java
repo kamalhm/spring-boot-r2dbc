@@ -9,9 +9,9 @@ import reactor.core.publisher.Mono;
 @Configuration
 public class PostgresAuditorAwareConfiguration {
 
-  @Bean
-  ReactiveAuditorAware<String> auditorAware() {
-    return () -> Mono.just("AUDITOR");
-  }
+    @Bean
+    ReactiveAuditorAware<String> auditorAware() {
+        return () -> Mono.just("AUDITOR");
+    }
 
 }
