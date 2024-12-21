@@ -5,6 +5,6 @@ import lombok.Data;
 @Data
 public class CreateBalanceWebRequest {
 
-  private String memberId;
-  private Long balance;
+    private Long memberId;
+    private Long balance;
 }

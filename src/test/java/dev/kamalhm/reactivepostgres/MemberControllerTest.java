@@ -26,67 +26,72 @@ import static org.hamcrest.Matchers.containsInAnyOrder;
 @ActiveProfiles(profiles = "test")
 class MemberControllerTest {
 
-  @Autowired
-  private WebTestClient webTestClient;
+    @Autowired
+    private WebTestClient webTestClient;
 
-  @Autowired
-  private MemberRepository memberRepository;
+    @Autowired
+    private MemberRepository memberRepository;
 
-  @Value("${spring.r2dbc.url}")
-  private String dbUrl;
+    @Value("${spring.r2dbc.url}")
+    private String dbUrl;
 
-  @BeforeEach
-  public void setup() {
-    initializeDatabase();
-    insertData();
-  }
+    @BeforeEach
+    public void setup() {
+        initializeDatabase();
+        insertData();
+    }
 
-  private void initializeDatabase() {
-    ConnectionFactory connectionFactory = ConnectionFactories.get(dbUrl);
-    R2dbcEntityTemplate template = new R2dbcEntityTemplate(connectionFactory);
-    String query = "CREATE TABLE IF NOT EXISTS member (id SERIAL PRIMARY KEY, name TEXT NOT NULL);";
-    template.getDatabaseClient().sql(query).fetch().rowsUpdated().block();
-  }
+    private void initializeDatabase() {
+        ConnectionFactory connectionFactory = ConnectionFactories.get(dbUrl);
+        R2dbcEntityTemplate template = new R2dbcEntityTemplate(connectionFactory);
+        String query = """
+                    CREATE TABLE IF NOT EXISTS member
+                    (
+                        id   BIGINT GENERATED ALWAYS AS IDENTITY,
+                        name TEXT NOT NULL
+                    );
+                """;
+        template.getDatabaseClient().sql(query).fetch().rowsUpdated().block();
+    }
 
-  private void insertData() {
-    Flux<Member> memberFlux = Flux.just(
-        Member.builder().name("ani").build(),
-        Member.builder().name("budi").build(),
-        Member.builder().name("cep").build(),
-        Member.builder().name("dod").build()
-    );
-    memberRepository.deleteAll()
-        .thenMany(memberFlux)
-        .flatMap(memberRepository::save)
-        .doOnNext(member -> log.info("inserted {}", member))
-        .blockLast();
-  }
+    private void insertData() {
+        Flux<Member> memberFlux = Flux.just(
+                new Member("ani"),
+                new Member("budi"),
+                new Member("cep"),
+                new Member("dod"));
+        memberRepository.deleteAll()
+                .thenMany(memberFlux)
+                .flatMap(memberRepository::save)
+                .doOnNext(member -> log.info("inserted {}", member))
+                .blockLast();
+    }
 
-  @Test
-  public void getAll() {
-    webTestClient.get()
-            .uri("/api/member")
-            .accept(MediaType.APPLICATION_JSON)
-            .exchange()
-            .expectStatus().isOk()
-            .expectBody()
-            .jsonPath("$[*].name")
-            .value(containsInAnyOrder("ani", "budi", "cep", "dod"));
-  }
+    @Test
+    public void getAll() {
+        webTestClient.get()
+                .uri("/api/member")
+                .accept(MediaType.APPLICATION_JSON)
+                .exchange()
+                .expectStatus().isOk()
+                .expectBody()
+                .jsonPath("$[*].name")
+                .value(containsInAnyOrder("ani", "budi", "cep", "dod"));
+    }
 
 
-  @Test
-  public void getOne() {
-    webTestClient.get()
-        .uri("/api/member/ani")
-        .accept(MediaType.APPLICATION_JSON)
-        .exchange()
-        .expectStatus()
-        .isOk()
-        .expectBody()
-        .jsonPath("$.name")
-        .isEqualTo("ani")
-        .jsonPath("$.id")
-        .isNumber();
-  }
+    @Test
+    public void getOne() {
+        webTestClient.get()
+                .uri("/api/member/ani")
+                .accept(MediaType.APPLICATION_JSON)
+                .exchange()
+                .expectStatus()
+                .isOk()
+                .expectBody()
+                .jsonPath("$.name")
+                .isEqualTo("ani")
+                .jsonPath("$.id")
+                .isNumber();
+    }
 }

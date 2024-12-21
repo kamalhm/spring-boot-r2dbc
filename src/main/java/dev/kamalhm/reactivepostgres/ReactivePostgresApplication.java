@@ -14,17 +14,17 @@ import org.springframework.r2dbc.connection.init.ResourceDatabasePopulator;
 @EnableR2dbcAuditing
 public class ReactivePostgresApplication {
 
-  public static void main(String[] args) {
-    SpringApplication.run(ReactivePostgresApplication.class, args);
-  }
+    public static void main(String[] args) {
+        SpringApplication.run(ReactivePostgresApplication.class, args);
+    }
 
-  @Bean
-  ConnectionFactoryInitializer initializer(@Qualifier("connectionFactory") ConnectionFactory connectionFactory) {
-    ConnectionFactoryInitializer initializer = new ConnectionFactoryInitializer();
-    initializer.setConnectionFactory(connectionFactory);
-    ResourceDatabasePopulator resource =
-        new ResourceDatabasePopulator(new ClassPathResource("schema.sql"));
-    initializer.setDatabasePopulator(resource);
-    return initializer;
-  }
+    @Bean
+    ConnectionFactoryInitializer initializer(@Qualifier("connectionFactory") ConnectionFactory connectionFactory) {
+        ConnectionFactoryInitializer initializer = new ConnectionFactoryInitializer();
+        initializer.setConnectionFactory(connectionFactory);
+        ResourceDatabasePopulator resource =
+                new ResourceDatabasePopulator(new ClassPathResource("schema.sql"));
+        initializer.setDatabasePopulator(resource);
+        return initializer;
+    }
 }

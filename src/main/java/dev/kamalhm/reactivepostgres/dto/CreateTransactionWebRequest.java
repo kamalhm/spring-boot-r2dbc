@@ -5,7 +5,7 @@ import lombok.Data;
 @Data
 public class CreateTransactionWebRequest {
 
-  private String from;
-  private String to;
+  private Long from;
+  private Long to;
   private Long amount;
 }

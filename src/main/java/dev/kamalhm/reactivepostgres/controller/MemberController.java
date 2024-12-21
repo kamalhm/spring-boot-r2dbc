@@ -23,44 +23,44 @@ import reactor.core.scheduler.Schedulers;
 @Slf4j
 public class MemberController {
 
-  private final MemberRepository memberRepository;
+    private final MemberRepository memberRepository;
 
-  @GetMapping
-  public Flux<Member> getAll() {
-    return memberRepository.findAll();
-  }
+    @GetMapping
+    public Flux<Member> getAll() {
+        return memberRepository.findAll();
+    }
 
-  @GetMapping(value = "/{name}")
-  public Mono<Member> getOne(@PathVariable String name) {
-    return memberRepository.findByName(name);
-  }
+    @GetMapping(value = "/{name}")
+    public Mono<Member> getOne(@PathVariable String name) {
+        return memberRepository.findByName(name);
+    }
 
-  @PostMapping
-  public Mono<Member> createMember(@RequestBody Member member) {
-    return memberRepository.save(member);
-  }
+    @PostMapping
+    public Mono<Member> createMember(@RequestBody Member member) {
+        return memberRepository.save(member);
+    }
 
-  @PostMapping(value = "/{number}")
-  public Flux<Member> createMembers(@PathVariable int number) {
-    return generateRandomMember(number).subscribeOn(Schedulers.boundedElastic());
-  }
+    @PostMapping(value = "/{number}")
+    public Flux<Member> createMembers(@PathVariable int number) {
+        return generateRandomMember(number).subscribeOn(Schedulers.boundedElastic());
+    }
 
-  private Flux<Member> generateRandomMember(int number) {
-    return Mono.fromSupplier(
-            () -> Member.builder().name(RandomStringUtils.randomAlphabetic(5)).build())
-        .flatMap(memberRepository::save)
-        .repeat(number);
-  }
+    private Flux<Member> generateRandomMember(int number) {
+        return Mono.fromSupplier(
+                        () -> new Member(RandomStringUtils.randomAlphabetic(5)))
+                .flatMap(memberRepository::save)
+                .repeat(number);
+    }
 
-  @PutMapping
-  public Mono<Member> updateMember(@RequestBody Member member) {
-    return memberRepository
-        .findByName(member.getName())
-        .flatMap(memberResult -> memberRepository.save(member));
-  }
+    @PutMapping
+    public Mono<Member> updateMember(@RequestBody Member member) {
+        return memberRepository
+                .findByName(member.name())
+                .flatMap(memberResult -> memberRepository.save(member));
+    }
 
-  @DeleteMapping
-  public Mono<Void> deleteMember(@RequestBody Member member) {
-    return memberRepository.deleteById(member.getId());
-  }
+    @DeleteMapping
+    public Mono<Void> deleteMember(@RequestBody Member member) {
+        return memberRepository.deleteById(member.id());
+    }
 }

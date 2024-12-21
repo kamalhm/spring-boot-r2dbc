@@ -18,11 +18,11 @@ import reactor.core.publisher.Mono;
 @Slf4j
 public class TransactionController {
 
-  private final TransactionalService transactionalService;
+    private final TransactionalService transactionalService;
 
-  @PostMapping
-  @Transactional
-  public Mono<Balance> createTransaction(@RequestBody CreateTransactionWebRequest request) {
-    return transactionalService.doTransaction(request);
-  }
+    @PostMapping
+    @Transactional
+    public Mono<Balance> createTransaction(@RequestBody CreateTransactionWebRequest request) {
+        return transactionalService.doTransaction(request);
+    }
 }
