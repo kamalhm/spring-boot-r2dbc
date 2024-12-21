@@ -4,7 +4,6 @@ import dev.kamalhm.reactivepostgres.entity.Member;
 import dev.kamalhm.reactivepostgres.repository.MemberRepository;
 import io.r2dbc.spi.ConnectionFactories;
 import io.r2dbc.spi.ConnectionFactory;
-import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +21,6 @@ import static org.hamcrest.Matchers.containsInAnyOrder;
 
 @SpringBootTest
 @AutoConfigureWebTestClient
-@Slf4j
 @ActiveProfiles(profiles = "test")
 class MemberControllerTest {
 
@@ -63,7 +61,6 @@ class MemberControllerTest {
         memberRepository.deleteAll()
                 .thenMany(memberFlux)
                 .flatMap(memberRepository::save)
-                .doOnNext(member -> log.info("inserted {}", member))
                 .blockLast();
     }
 

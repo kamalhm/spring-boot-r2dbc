@@ -6,26 +6,26 @@ import dev.kamalhm.reactivepostgres.repository.BalanceRepository;
 
 import java.util.Random;
 
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import reactor.core.publisher.Mono;
 import reactor.util.function.Tuple2;
 
-@RequiredArgsConstructor
 @Service
-@Slf4j
 public class TransactionalService {
 
     private final BalanceRepository balanceRepository;
 
+    public TransactionalService(BalanceRepository balanceRepository) {
+        this.balanceRepository = balanceRepository;
+    }
+
     @Transactional
     public Mono<Balance> doTransaction(CreateTransactionWebRequest request) {
-        Long amount = request.getAmount();
+        Long amount = request.amount();
 
-        return Mono.zip(balanceRepository.findByMemberId(request.getFrom()),
-                        balanceRepository.findByMemberId(request.getTo()))
+        return Mono.zip(balanceRepository.findByMemberId(request.from()),
+                        balanceRepository.findByMemberId(request.to()))
                 .flatMap(balanceTuple -> executeTransaction(balanceTuple, amount));
     }
 
@@ -42,7 +42,6 @@ public class TransactionalService {
     }
 
     private Mono<Balance> increaseBalance(Balance toBalance, Long amount, Double randomValue) {
-        log.info("random value {}", randomValue);
         if (randomValue < 0.5) {
             return Mono.error(new RuntimeException("randomized error"));
         }
@@ -71,6 +70,5 @@ public class TransactionalService {
         );
         return balanceRepository.save(updatedBalance);
     }
-
 
 }
