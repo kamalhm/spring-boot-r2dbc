@@ -31,7 +31,3 @@ An example implementation of Spring Boot R2DBC REST API with PostgreSQL database
 2. Run generated docker image
 
 `docker run -it -p8080:8080 --network="host" reactive-postgres:0.0.3-SNAPSHOT`
-
-
-
-
