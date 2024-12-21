@@ -2,8 +2,6 @@ package dev.kamalhm.reactivepostgres.controller;
 
 import dev.kamalhm.reactivepostgres.entity.Member;
 import dev.kamalhm.reactivepostgres.repository.MemberRepository;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,11 +17,13 @@ import reactor.core.scheduler.Schedulers;
 
 @RestController
 @RequestMapping(value = "/api/member")
-@RequiredArgsConstructor
-@Slf4j
 public class MemberController {
 
     private final MemberRepository memberRepository;
+
+    public MemberController(MemberRepository memberRepository) {
+        this.memberRepository = memberRepository;
+    }
 
     @GetMapping
     public Flux<Member> getAll() {
